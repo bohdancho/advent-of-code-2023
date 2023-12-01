@@ -30,33 +30,26 @@ function solvePartTwo(input: string) {
     const lastDigit: Digit = {}
 
     Object.entries(digitStringsDictionary).forEach(([digitWord, digitNum]) => {
-      const wordFirstIndex = line.indexOf(digitWord)
-      const numFirstIndex = line.indexOf(digitNum)
-      const wordLastIndex = line.lastIndexOf(digitWord)
-      const numLastIndex = line.lastIndexOf(digitNum)
+      handleFirstIndex(line.indexOf(digitWord))
+      handleFirstIndex(line.indexOf(digitNum))
+      handleLastIndex(line.lastIndexOf(digitWord))
+      handleLastIndex(line.lastIndexOf(digitNum))
 
-      if (wordFirstIndex !== -1) {
-        if (firstDigit.index === undefined || wordFirstIndex < firstDigit.index) {
-          firstDigit.index = wordFirstIndex
-          firstDigit.value = digitNum
+      function handleFirstIndex(index: number) {
+        if (index !== -1) {
+          if (firstDigit.index === undefined || index < firstDigit.index) {
+            firstDigit.index = index
+            firstDigit.value = digitNum
+          }
         }
       }
-      if (numFirstIndex !== -1) {
-        if (firstDigit.index === undefined || numFirstIndex < firstDigit.index) {
-          firstDigit.index = numFirstIndex
-          firstDigit.value = digitNum
-        }
-      }
-      if (wordLastIndex !== -1) {
-        if (lastDigit.index === undefined || wordLastIndex > lastDigit.index) {
-          lastDigit.index = wordLastIndex
-          lastDigit.value = digitNum
-        }
-      }
-      if (numLastIndex !== -1) {
-        if (lastDigit.index === undefined || numLastIndex > lastDigit.index) {
-          lastDigit.index = numLastIndex
-          lastDigit.value = digitNum
+
+      function handleLastIndex(index: number) {
+        if (index !== -1) {
+          if (lastDigit.index === undefined || index > lastDigit.index) {
+            lastDigit.index = index
+            lastDigit.value = digitNum
+          }
         }
       }
     })
