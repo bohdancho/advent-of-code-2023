@@ -26,35 +26,27 @@ function solvePartTwo(input: string) {
   const lines = input.split('\n').slice(0, -1)
   return lines.reduce((accumulator, line) => {
     type Digit = { value?: string; index?: number }
-    const firstDigit: Digit = {}
-    const lastDigit: Digit = {}
+    const digits: { [place in 0 | 1]: Digit } = { 0: {}, 1: {} }
 
-    Object.entries(digitStringsDictionary).forEach(([digitWord, digitNum]) => {
-      handleFirstIndex(line.indexOf(digitWord))
-      handleFirstIndex(line.indexOf(digitNum))
-      handleLastIndex(line.lastIndexOf(digitWord))
-      handleLastIndex(line.lastIndexOf(digitNum))
+    Object.entries(digitStringsDictionary).forEach(([digitWord, digitNumber]) => {
+      handleString(digitWord, 0)
+      handleString(digitNumber, 0)
+      handleString(digitWord, 1)
+      handleString(digitNumber, 1)
 
-      function handleFirstIndex(index: number) {
-        if (index !== -1) {
-          if (firstDigit.index === undefined || index < firstDigit.index) {
-            firstDigit.index = index
-            firstDigit.value = digitNum
-          }
-        }
-      }
+      function handleString(string: string, digitPlace: 0 | 1) {
+        const index = digitPlace === 0 ? line.indexOf(string) : line.lastIndexOf(string)
+        if (index === -1) return
 
-      function handleLastIndex(index: number) {
-        if (index !== -1) {
-          if (lastDigit.index === undefined || index > lastDigit.index) {
-            lastDigit.index = index
-            lastDigit.value = digitNum
-          }
+        const digit = digits[digitPlace]
+        if (digit.index === undefined || (digitPlace === 0 ? index < digit.index : index > digit.index)) {
+          digit.index = index
+          digit.value = digitNumber
         }
       }
     })
 
-    const lineSum = Number(`${firstDigit.value}${lastDigit.value}`)
+    const lineSum = Number(`${digits[0].value}${digits[1].value}`)
     return accumulator + lineSum
   }, 0)
 }
