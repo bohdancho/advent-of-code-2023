@@ -51,7 +51,7 @@ function solvePartTwo(input: string) {
   }, 0)
 }
 
-const fileInput = await Bun.file('./src/input.txt').text()
+const fileInput = await Bun.file('./src/day1/input.txt').text()
 console.log(solvePartOne(fileInput))
 console.log(solvePartTwo(fileInput))
 
