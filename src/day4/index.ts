@@ -25,10 +25,10 @@ function getCardMatches(str: string): number {
 }
 
 export function solvePartTwo(input: string): number {
-  const cards = input.split('\n').slice(0, -1).map(getCardMatches)
+  const cards = input.split('\n').slice(0, -1)
   const resolvedCardsReversed: number[] = []
   for (let i = 0; i < cards.length; i++) {
-    const shallowMatches = cards[cards.length - i - 1]
+    const shallowMatches = getCardMatches(cards[cards.length - i - 1])
     const deepMatches = resolvedCardsReversed.slice(Math.max(i - shallowMatches, 0), i).reduce((acc, v) => acc + v, 0)
     resolvedCardsReversed.push(deepMatches + 1)
   }
