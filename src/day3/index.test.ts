@@ -12,9 +12,9 @@ const input = `467..114..
 ...$.*....
 .664.598..`
 
-// test('engine numbers', () => {
-//   expect(solvePartOne(input)).toBe(4361)
-// })
+test('engine numbers', () => {
+  expect(solvePartOne(input)).toBe(4361)
+})
 
 test('gear ratios', () => {
   expect(solvePartTwo(input)).toBe(467835)
