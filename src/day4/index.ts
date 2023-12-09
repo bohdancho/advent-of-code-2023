@@ -25,25 +25,14 @@ function getCardMatches(str: string): number {
 }
 
 export function solvePartTwo(input: string): number {
-  const originalCards: { index: number; matches: number }[] = input
-    .split('\n')
-    .slice(0, -1)
-    .map((card, index) => ({
-      index,
-      matches: getCardMatches(card),
-    }))
-  const cardCopies = structuredClone(originalCards)
-
-  for (let i = 0; i < cardCopies.length; i++) {
-    const card = cardCopies[i]
-    if (!card) continue
-    const { index: originalIndex, matches } = card
-
-    const prizeCards = originalCards.slice(originalIndex + 1, originalIndex + matches + 1)
-    cardCopies.push(...prizeCards)
+  const cards = input.split('\n').slice(0, -1).map(getCardMatches)
+  const resolvedCardsReversed: number[] = []
+  for (let i = 0; i < cards.length; i++) {
+    const shallowMatches = cards[cards.length - i - 1]
+    const deepMatches = resolvedCardsReversed.slice(Math.max(i - shallowMatches, 0), i).reduce((acc, v) => acc + v, 0)
+    resolvedCardsReversed.push(deepMatches + 1)
   }
-
-  return cardCopies.length
+  return resolvedCardsReversed.reduce((acc, v) => acc + v, 0)
 }
 
 const input = await Bun.file('./src/day4/input.txt').text()
