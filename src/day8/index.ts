@@ -31,30 +31,46 @@ export function solvePartTwo(input: string): number {
     map[node] = optionsStr.slice(1, -1).split(', ') as [string, string]
   })
 
-  const currentNodes = Object.keys(map)
-    .filter((node) => node.endsWith('A'))
-    .slice(5, 6) // i just did LCM "by hand" lol
-  let step = 0
-  let globalStep = 0
-  while (globalStep < 100000) {
-    for (let i = 0; i < currentNodes.length; i++) {
+  const currentNodes = Object.keys(map).filter((node) => node.endsWith('A'))
+  const cycleLengths: number[] = []
+  for (let i = 0; i < currentNodes.length; i++) {
+    let step = 0
+    let globalStep = 0
+    while (!currentNodes[i].endsWith('Z')) {
       const options = map[currentNodes[i]]
       const choice = instructions[step] === 'L' ? 0 : 1
       currentNodes[i] = options[choice]
+
+      globalStep++
+      if (step === instructions.length - 1) {
+        step = 0
+      } else {
+        step++
+      }
     }
-    globalStep++
-    if (step === instructions.length - 1) {
-      step = 0
-    } else {
-      step++
-    }
-    if (currentNodes.every((node) => node.endsWith('Z'))) {
-      console.log(globalStep)
-    }
+    cycleLengths.push(globalStep)
   }
-  return globalStep
+
+  let totalLcm = 1
+  cycleLengths.forEach((cycle) => {
+    totalLcm = getLcm(totalLcm, cycle)
+  })
+  return totalLcm
+}
+
+function getLcm(x: number, y: number) {
+  return (x * y) / getGcd(x, y)
+}
+
+function getGcd(x: number, y: number) {
+  while (y) {
+    const t = y
+    y = x % y
+    x = t
+  }
+  return x
 }
 
 const input = await Bun.file('./src/day8/input.txt').text()
 console.log('Part one: ', solvePartOne(input))
-// console.log('Part two: ', solvePartTwo(input))
+console.log('Part two: ', solvePartTwo(input))
