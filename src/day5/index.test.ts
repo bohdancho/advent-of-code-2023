@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test'
-import { solvePartOne } from './index'
+import { solvePartOne, solvePartTwo } from './index'
 
 const input = `seeds: 79 14 55 13
 
@@ -37,4 +37,8 @@ humidity-to-location map:
 
 test('part one', () => {
   expect(solvePartOne(input)).toBe(35)
+})
+
+test('part two', () => {
+  expect(solvePartTwo(input)).toBe(46)
 })
